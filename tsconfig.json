@@ -1,27 +1,45 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2017", // หรือจะใช้ "ES2016", "ES2018" ก็ได้ ขึ้นอยู่กับเวอร์ชัน Node.js ที่ใช้รัน server
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": true,
+    // "noEmit": true, // <-- **เอาออก หรือตั้งเป็น false** ถ้าต้องการให้ tsc สามารถ compile server code ได้ (เผื่อกรณี build production) หรือปล่อยไว้ถ้าใช้ ts-node-dev เท่านั้น
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "CommonJS", // <--- เปลี่ยนเป็น CommonJS
+    "moduleResolution": "node", // <--- เปลี่ยนเป็น node
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": true, // อาจจะต้องเอาออกถ้า "noEmit" เป็น false และมีการ compile จริง
     "jsx": "preserve",
     "incremental": true,
+    "forceConsistentCasingInFileNames": true, // เพิ่มตัวนี้ ช่วยป้องกันปัญหาบนบาง OS
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "noEmit": true
+    // "outDir": "./dist" // <-- อาจจะเพิ่ม ถ้าต้องการ compile server แยก (สำหรับ production build)
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "server/**/*.ts" // <--- เพิ่ม path ไปยัง server code
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ] // เพิ่ม "dist" ถ้ามีการตั้งค่า outDir
 }
